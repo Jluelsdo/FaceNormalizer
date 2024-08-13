@@ -1,0 +1,13 @@
+{
+    "Order of Manipulation": [
+        "Cut face",
+        "Rescale size",
+        "Rotate face",
+        "Translate face",
+        "Add noise",
+        "Normalize number of vertices"
+    ],
+    "Normalize number of verticies": {
+        "Number of Vertices": 1000
+    }
+}
