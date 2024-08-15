@@ -11,8 +11,8 @@ class FaceNormalizer():
         self.landmarks_config = config["Landmarks"]["LandmarksConfig"]
 
         if config["DataSource"] == "test":
-            self.path_sourcedata = "Data/Testdata/original"
-            self.path_targetdata = "Data/Testdata/target"
+            self.path_sourcedata = "../Data/Testdata/original/testscan.stl"
+            self.path_targetdata = "../Data/Testdata/target"
 
 
     def run_normalization(self):

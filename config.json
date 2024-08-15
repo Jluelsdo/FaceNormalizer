@@ -12,7 +12,7 @@
         "Number of Vertices": 1000
     },
     "Landmarks": {
-        "LandmarksConfig": "DTU3D-geometry.json"
+        "LandmarksConfig": "configs/DTU3D-geometry.json"
     },
     "DataSource":"test"
 }
