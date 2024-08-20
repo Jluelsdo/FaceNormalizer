@@ -1,5 +1,6 @@
 import json
 from Manipulations.landmarks import start_landmark_search
+from Manipulations.downsample import downsample
 class FaceNormalizer():
 
     def __init__(self):
@@ -12,7 +13,7 @@ class FaceNormalizer():
 
         if config["DataSource"] == "test":
             self.path_sourcedata = "Data/Testdata/original/testscan.stl"
-            self.path_targetdata = "Data/Testdata/target"
+            self.path_targetdata = "Data/Testdata/original"
 
 
     def run_normalization(self):
@@ -56,6 +57,7 @@ class FaceNormalizer():
 
     def _run_normalize_number_of_vertices(self):
         """Run the normalization of the face using the normalization of the number of vertices."""
+        downsample(self.path_sourcedata, self.path_targetdata+"/testscan_normalized.stl", self.normalize_number_of_vertices['Number of Vertices'])
         print("Normalize number of vertices")
 
 
