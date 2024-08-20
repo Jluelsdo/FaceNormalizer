@@ -4,6 +4,8 @@ Package to normalize a 3D human face, in orientation, location and number of ver
 
 To install the submodules after cloning run
 ``` git submodule update --init --recursive ```
+
+The software is tested with Python 3.8.10, due to the submodule Deep-MVLM, other versions of Python might cause issues.
 To install the requirements run
 ``` pip install -r requirements.txt ```
 
