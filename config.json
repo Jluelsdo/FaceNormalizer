@@ -1,5 +1,6 @@
 {
-    "Order of Manipulation": [
+    "ManipulationOrder": [
+        "Landmarks",
         "Cut face",
         "Rescale size",
         "Rotate face",
@@ -7,7 +8,11 @@
         "Add noise",
         "Normalize number of vertices"
     ],
-    "Normalize number of verticies": {
+    "Normalize number of vertices": {
         "Number of Vertices": 1000
-    }
+    },
+    "Landmarks": {
+        "LandmarksConfig": "Deep-MVLM/configs/DTU3D-geometry.json"
+    },
+    "DataSource":"test"
 }
