@@ -9,10 +9,21 @@
         "Normalize number of vertices"
     ],
     "Normalize number of vertices": {
-        "Number of Vertices": 1000
+        "Number of Vertices": 1000,
+        "SaveIntermediateSteps": true
     },
     "Landmarks": {
         "LandmarksConfig": "Deep-MVLM/configs/DTU3D-geometry.json"
     },
-    "DataSource":"test"
+    "Cutting": {
+        "OrderCutting": ["outline", "upper_face", "lower_face"],
+        "SaveIntermediateSteps": true
+    },
+    "DataSource":{
+        "type":"local",
+        "path_source":"../data/in_progress",
+        "path_target_landmarks":"../data/landmarks",
+        "path_target_cutting":"../data/cutting",
+        "path_target_normalize_number_of_vertices":"../data/normalize_number_of_vertices"
+    }
 }
