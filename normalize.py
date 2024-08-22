@@ -11,10 +11,19 @@ class FaceNormalizer():
         self.order_of_manipulation = config["ManipulationOrder"]
         self.normalize_number_of_vertices = config["Normalize number of vertices"]
         self.landmarks_config = config["Landmarks"]["LandmarksConfig"]
+        self.cutting_config = config["Cutting"]
 
-        if config["DataSource"] == "test":
+        if config["DataSource"]["type"] == "test":
             self.path_sourcedata = "Data/Testdata/original/testscan.stl"
-            self.path_targetdata = "Data/Testdata/original"
+            self.path_target_landmarks = "Data/Testdata/original"
+            self.path_target_cutting = "Data/Testdata/original"+"/testscan_cut.stl"
+            self.path_target_normalize_number_of_vertices = "Data/Testdata/original/testscan_normalized.stl"
+
+        elif config["DataSource"]["type"] == "local":
+            self.path_sourcedata = config["DataSource"]["path_source"]
+            self.path_target_landmarks = config["DataSource"]["path_target_landmarks"]
+            self.path_target_cutting = config["DataSource"]["path_target_cutting"]
+            self.path_target_normalize_number_of_vertices = config["DataSource"]["path_target_normalize_number_of_vertices"]
 
 
     def run_normalization(self):
@@ -36,7 +45,7 @@ class FaceNormalizer():
 
     def _run_landmarks(self):
         """Run the normalization of the face using landmarks."""
-        start_landmark_search(self.path_sourcedata, self.landmarks_config, self.path_targetdata)
+        start_landmark_search(self.path_sourcedata, self.landmarks_config, self.path_target_landmarks)
         print("Landmarks done")
         return True
 
@@ -47,8 +56,7 @@ class FaceNormalizer():
     def _run_cutting(self):
         """Run the normalization of the face using cutting."""
         cutting = Cutting()
-        cutting.cutting_outlines_through_hull(self.path_sourcedata, self.path_targetdata+"/testscan_cut.stl", self.landmarks_config)
-        cutting.cut_upper_lower_face(self.path_sourcedata, self.path_targetdata+"/testscan_cut.stl", self.path_sourcedata.replace(".stl", "_landmarks.txt"), None)
+        cutting.run_cutting(self.path_sourcedata, self.path_target_cutting, self.cutting_config["OrderCutting"], self.path_target_landmarks, self.cutting_config["SaveIntermediateSteps"])
         print("Cutting done")
         return True
 
@@ -62,10 +70,8 @@ class FaceNormalizer():
 
     def _run_normalize_number_of_vertices(self):
         """Run the normalization of the face using the normalization of the number of vertices."""
-        downsample(self.path_sourcedata, self.path_targetdata+"/testscan_normalized.stl", self.normalize_number_of_vertices['Number of Vertices'])
+        downsample(self.path_sourcedata, self.path_target_normalize_number_of_vertices, self.normalize_number_of_vertices["Number of Vertices"], self.normalize_number_of_vertices["SaveIntermediateSteps"])
         print("Normalize number of vertices")
-
-
 
 if __name__ == '__main__':
     faceNormalizer = FaceNormalizer()
