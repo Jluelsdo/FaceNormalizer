@@ -1,6 +1,7 @@
 import json
 from Manipulations.landmarks import start_landmark_search
 from Manipulations.downsample import downsample
+from Manipulations.cut import Cutting
 class FaceNormalizer():
 
     def __init__(self):
@@ -24,7 +25,7 @@ class FaceNormalizer():
                 self._run_landmarks()
             elif manipulation == "Rescale size":
                 self._run_rescale()
-            elif manipulation == "Cut face":
+            elif manipulation == "Cutting":
                 self._run_cutting()
             elif manipulation == "Rotate face":
                 self._run_rotate()
@@ -45,8 +46,12 @@ class FaceNormalizer():
 
     def _run_cutting(self):
         """Run the normalization of the face using cutting."""
-        print("Cutting")
-    
+        cutting = Cutting()
+        cutting.cutting_outlines_through_hull(self.path_sourcedata, self.path_targetdata+"/testscan_cut.stl", self.landmarks_config)
+        cutting.cut_upper_lower_face(self.path_sourcedata, self.path_targetdata+"/testscan_cut.stl", self.path_sourcedata.replace(".stl", "_landmarks.txt"), None)
+        print("Cutting done")
+        return True
+
     def _run_rotate(self):
         """Run the normalization of the face using rotation."""
         print("Rotate")

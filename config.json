@@ -1,7 +1,7 @@
 {
     "ManipulationOrder": [
         "Landmarks",
-        "Cut face",
+        "Cutting",
         "Rescale size",
         "Rotate face",
         "Translate face",
