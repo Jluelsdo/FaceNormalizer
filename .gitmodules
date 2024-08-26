@@ -1,3 +1,6 @@
 [submodule "Deep-MVLM"]
 	path = Deep-MVLM
 	url = https://github.com/RasmusRPaulsen/Deep-MVLM.git
+[submodule "Manipulations/AI_Assistance_Project"]
+	path = Manipulations/AI_Assistance_Project
+	url = https://github.com/danyagomezcantu/AI_Assistance_Project.git
