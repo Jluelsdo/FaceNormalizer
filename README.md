@@ -44,6 +44,7 @@ The following is an example of a config.json file:
         "SaveIntermediateSteps": true
     },
 }
+```
 
 ### DataSource
 The DataSource defines the type of datasource and the location. Options for "type" are "test" and "local". If "type" is "test" the data will be used from the repo "Data/Testdata/original".
@@ -52,10 +53,19 @@ If "type" is "local" the data will be used from the location specified in "path_
 ### ManipulationOrder
 The order of the manipulations to be applied to the face. The manipulations are applied in the order they are specified in the list. If a manipulation is not specified in the list, it will not be applied. It is recommended to have "Landmarks" as the first manipulation, as the other manipulations depend on the landmarks or to have existing landmarks for the stl scans that are being processed within the "path_target_landmarks" folder.
 
+The order of manipulations follows the following rules:
+1. If it wont change the outcome of the result always apply the manipulation before every manipulation where this does not apply
+2. If a manipulation A depends on another manipulation B don't allow to execute A before B
+3. If a manipulation changes the location of vertices apply those changes to all landmarks
+4. If manipulations can be set together in groups, add them to groups (Cutting)
+
+The file normalize.py ensures that the manipulations are applied in the correct order.
+
+![Data Preperation Pipeline](Documentation/data_preperation_pipeline.png)
+
 ### Manipulation Configurations
 The user can specify the parameters for each manipulation. The parameters are specified in the respective manipulation. The user can also specify the location of the landmarks configuration file in the "Landmarks" manipulation. The user can also specify the number of vertices in the "Normalize number of vertices" manipulation. The user can also specify the order of cutting in the "Cutting" manipulation.
 
-```
 
 
 ## Troubleshoting
