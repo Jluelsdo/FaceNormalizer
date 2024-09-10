@@ -1,13 +1,8 @@
 {
     "ManipulationOrder": [
         "Landmarks",
-        "Cutting",
-        "Rescale size",
-        "Rotate face",
-        "Translate face",
-        "Add noise",
-        "Normalize number of vertices"
-    ],
+        "Cutting"
+        ],
     "Normalize number of vertices": {
         "Number of Vertices": 1000,
         "SaveIntermediateSteps": true
@@ -17,7 +12,8 @@
     },
     "Cutting": {
         "OrderCutting": ["outline", "upper_face", "lower_face"],
-        "SaveIntermediateSteps": true
+        "SaveIntermediateSteps": true,
+        "FaceInflation": 1.5
     },
     "DataSource":{
         "type":"local",

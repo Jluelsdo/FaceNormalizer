@@ -4,7 +4,7 @@ import trimesh
 import os
 class Cutting:
 
-    def run_cutting(self, path_sourcedata, path_target_cutting, order_cutting, path_target_landmarks, save_intermediate_step=True):
+    def run_cutting(self, path_sourcedata, path_target_cutting, order_cutting, path_target_landmarks, face_inflation=1.5, save_intermediate_step=True):
 
         for file in os.listdir(path_sourcedata):
             if not file.endswith(".stl"):
@@ -21,7 +21,7 @@ class Cutting:
             # Cut the face
             for cut in order_cutting:
                 if cut == "outline":
-                    self._cutting_outlines_through_hull(file_path, os.path.join(path_target_cutting, file), path_landmarks, save_intermediate_step)
+                    self._cutting_outlines_through_hull(file_path, os.path.join(path_target_cutting, file), path_landmarks, face_inflation=face_inflation, save_intermediate_step=save_intermediate_step)
                 elif cut == "upper_face":
                     try:
                         cut_vertices_upper = self._cut_upper_face(landmarks, cut_vertices_lower)
@@ -47,7 +47,7 @@ class Cutting:
         tri = Delaunay(mesh.vertices[:,:2])
         return trimesh.Trimesh(vertices=vertices, faces=tri.simplices)
 
-    def _cutting_outlines_through_hull(self, path_sourcedata, path_targetdata, path_landmarks, save_intermediate_step):
+    def _cutting_outlines_through_hull(self, path_sourcedata, path_targetdata, path_landmarks, face_inflation=1.5, save_intermediate_step=True):
         """Start the cutting of the face."""
         landmarks = np.loadtxt(path_landmarks)
         hull = ConvexHull(landmarks)
@@ -55,7 +55,7 @@ class Cutting:
         center_hull = np.mean(hull.points, axis=0)
 
         for point in hull.points:
-            inflated_point = center_hull + 1.5 *(point-center_hull)
+            inflated_point = center_hull + face_inflation *(point-center_hull)
             inflated_points = np.vstack((inflated_points, inflated_point))
 
         inflated_hull = ConvexHull(inflated_points)
