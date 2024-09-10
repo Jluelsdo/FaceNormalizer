@@ -70,7 +70,7 @@ class FaceNormalizer():
     def _run_cutting(self):
         """Run the normalization of the face using cutting."""
         cutting = Cutting()
-        cutting.run_cutting(self.path_sourcedata, self.path_target_cutting, self.cutting_config["OrderCutting"], self.path_target_landmarks, self.cutting_config["SaveIntermediateSteps"])
+        cutting.run_cutting(self.path_sourcedata, self.path_target_cutting, self.cutting_config["OrderCutting"], self.path_target_landmarks, self.cutting_config["FaceInflation"], self.cutting_config["SaveIntermediateSteps"])
         print("Cutting done")
         return True
 
