@@ -27,12 +27,23 @@ class FaceNormalizer():
 
 
     def run_normalization(self):
-        """Run the normalization of the face."""
+        """Run the normalization of the face. Logic is described within the Readme.md ManipulationOrder."""
         print(f"Order of manipulation: {self.order_of_manipulation}")
+
+        # Rule 1 Run all Manipulations which are not dependent on other manipulations
+        landmarks_detected = False
+        if "Landmarks" in self.order_of_manipulation:
+            self._run_landmarks()
+            landmarks_detected = True
+        if "Determine number of vertices" in self.order_of_manipulation:
+            self._run_determine_number_of_vertices()
+        if "Determine orientation" in self.order_of_manipulation and landmarks_detected:
+            self._run_determine_orientation()
+        else:
+            print("Determine orientation is dependent on landmarks. Please add Landmarks to config.json.")
+
         for manipulation in self.order_of_manipulation:
-            if manipulation == "Landmarks":
-                self._run_landmarks()
-            elif manipulation == "Rescale size":
+            if manipulation == "Rescale size":
                 self._run_rescale()
             elif manipulation == "Cutting":
                 self._run_cutting()
@@ -40,8 +51,11 @@ class FaceNormalizer():
                 self._run_rotate()
             elif manipulation == "Translate face":
                 self._run_translate()
+                self._run_landmarks()
             elif manipulation == "Normalize number of vertices":
                 self._run_normalize_number_of_vertices()
+                self._run_landmarks()
+
 
     def _run_landmarks(self):
         """Run the normalization of the face using landmarks."""
@@ -72,6 +86,14 @@ class FaceNormalizer():
         """Run the normalization of the face using the normalization of the number of vertices."""
         downsample(self.path_sourcedata, self.path_target_normalize_number_of_vertices, self.normalize_number_of_vertices["Number of Vertices"], self.normalize_number_of_vertices["SaveIntermediateSteps"])
         print("Normalize number of vertices")
+
+    def _run_determine_number_of_vertices(self):
+        """Run the normalization of the face using the determination of the number of vertices."""
+        print("Determine number of vertices")
+
+    def _run_determine_orientation(self):
+        """Run the normalization of the face using the determination of the orientation."""
+        print("Determine orientation")
 
 if __name__ == '__main__':
     faceNormalizer = FaceNormalizer()
