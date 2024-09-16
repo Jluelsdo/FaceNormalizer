@@ -1,6 +1,6 @@
 import json
 from Manipulations.landmarks import start_landmark_search
-from Manipulations.downsample import downsample
+from Manipulations.verticeNumber import NormalizeNumberOfVertices
 from Manipulations.cut import Cutting
 class FaceNormalizer():
 
@@ -70,7 +70,8 @@ class FaceNormalizer():
 
     def _run_normalize_number_of_vertices(self):
         """Run the normalization of the face using the normalization of the number of vertices."""
-        downsample(self.path_sourcedata, self.path_target_normalize_number_of_vertices, self.normalize_number_of_vertices["Number of Vertices"], self.normalize_number_of_vertices["SaveIntermediateSteps"])
+        normalizeNumberOfVertices = NormalizeNumberOfVertices()
+        normalizeNumberOfVertices.normalize(self.path_sourcedata, self.path_target_normalize_number_of_vertices, self.normalize_number_of_vertices["Number of Vertices"], self.normalize_number_of_vertices["SaveIntermediateSteps"])
         print("Normalize number of vertices")
 
 if __name__ == '__main__':
