@@ -4,41 +4,35 @@ import trimesh
 import os
 class Cutting:
 
-    def run_cutting(self, path_sourcedata, path_target_cutting, order_cutting, path_target_landmarks, face_inflation=1.5, save_intermediate_step=True):
+    def run_cutting(self, file_path, path_target_cutting, order_cutting, path_target_landmarks, face_inflation=1.5, save_intermediate_step=True):
+        file_name = file_path.split("/")[-1]
+        path_landmarks = os.path.join(path_target_landmarks, file_name.replace(".stl", "_landmarks.txt"))
+        if not os.path.exists(path_landmarks):
+            print(f"Error: Landmarks file does not exist at {path_landmarks}!")
+        landmarks = np.loadtxt(path_landmarks)
+        mesh = trimesh.load_mesh(file_path)
 
-        for file in os.listdir(path_sourcedata):
-            if not file.endswith(".stl"):
-                continue
+        # Cut the face
+        for cut in order_cutting:
+            if cut == "outline":
+                self._cutting_outlines_through_hull(file_path, os.path.join(path_target_cutting, file_name), path_landmarks, face_inflation=face_inflation, save_intermediate_step=save_intermediate_step)
+            elif cut == "upper_face":
+                try:
+                    cut_vertices_upper = self._cut_upper_face(landmarks, cut_vertices_lower)
+                    cut_mesh = self._simulate_faces(cut_vertices_upper)
+                except NameError:
+                    cut_vertices_upper = self._cut_upper_face(landmarks, mesh.vertices)
+            elif cut == "lower_face":
+                try:
+                    cut_vertices_lower = self._cut_lower_face(landmarks, cut_vertices_upper)
+                    cut_mesh = self._simulate_faces(cut_vertices_lower)
+                except NameError:
+                    cut_vertices_lower = self._cut_lower_face(landmarks, mesh.vertices)
 
-            file_path = os.path.join(path_sourcedata, file)
-            path_landmarks = os.path.join(path_target_landmarks, file.replace(".stl", "_landmarks.txt"))
-            if not os.path.exists(path_landmarks):
-                print(f"Error: Landmarks file does not exist at {path_landmarks}!")
-                continue
-            landmarks = np.loadtxt(path_landmarks)
-            mesh = trimesh.load_mesh(file_path)
-
-            # Cut the face
-            for cut in order_cutting:
-                if cut == "outline":
-                    self._cutting_outlines_through_hull(file_path, os.path.join(path_target_cutting, file), path_landmarks, face_inflation=face_inflation, save_intermediate_step=save_intermediate_step)
-                elif cut == "upper_face":
-                    try:
-                        cut_vertices_upper = self._cut_upper_face(landmarks, cut_vertices_lower)
-                        cut_mesh = self._simulate_faces(cut_vertices_upper)
-                    except NameError:
-                        cut_vertices_upper = self._cut_upper_face(landmarks, mesh.vertices)
-                elif cut == "lower_face":
-                    try:
-                        cut_vertices_lower = self._cut_lower_face(landmarks, cut_vertices_upper)
-                        cut_mesh = self._simulate_faces(cut_vertices_lower)
-                    except NameError:
-                        cut_vertices_lower = self._cut_lower_face(landmarks, mesh.vertices)
-
-            # Export the cut mesh
-            if save_intermediate_step:
-                cut_mesh.export(os.path.join(path_target_cutting, file.replace(".stl", "_cut.stl")))
-            cut_mesh.export(file_path)
+        # Export the cut mesh
+        if save_intermediate_step:
+            cut_mesh.export(os.path.join(path_target_cutting, file_name.replace(".stl", "_cut.stl")))
+        cut_mesh.export(file_path)
         return True
 
     def _simulate_faces(self, vertices):
