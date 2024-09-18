@@ -2,14 +2,10 @@
     "ManipulationOrder": [
         "Landmarks",
         "Cutting",
-        "Rescale size",
-        "Rotate face",
-        "Translate face",
-        "Add noise",
         "Normalize number of vertices"
         ],
     "Normalize number of vertices": {
-        "Number of Vertices": 1000,
+        "Number of Vertices": 10000,
         "SaveIntermediateSteps": true
     },
     "Landmarks": {
@@ -22,11 +18,13 @@
     },
     "DataSource":{
         "type":"local",
+        "version":"1.0",
         "path_source":"../data/in_progress",
         "path_target_landmarks":"../data/landmarks",
         "path_target_cutting":"../data/cutting",
         "path_target_normalize_number_of_vertices":"../data/normalize_number_of_vertices",
-        "path_execution_list":"../data/execution_list/execution_list.csv",
-        "path_log":"../data/log"
+        "path_execution_doc":"../data/execution_doc/execution_doc.csv",
+        "path_log":"../data/log/log.txt"
     }
+
 }
