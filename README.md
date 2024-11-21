@@ -40,7 +40,7 @@ The following is an example of a config.json file:
     },
 
     "Cutting": {
-        "OrderCutting": ["outline", "upper_face", "lower_face"],
+        "OrderCutting": ["mouth", "outline", "upper_face", "lower_face"],
         "SaveIntermediateSteps": true
     },
 }

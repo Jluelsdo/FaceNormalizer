@@ -16,6 +16,8 @@ class Cutting:
         for cut in order_cutting:
             if cut == "outline":
                 self._cutting_outlines_through_hull(file_path, os.path.join(path_target_cutting, file_name), path_landmarks, face_inflation=face_inflation, save_intermediate_step=save_intermediate_step)
+            elif cut == "mouth":
+                self._cut_out_mouth(file_path, os.path.join(path_target_cutting, file_name), path_landmarks, face_inflation=face_inflation, save_intermediate_step=save_intermediate_step)
             elif cut == "upper_face":
                 try:
                     cut_vertices_upper = self._cut_upper_face(landmarks, cut_vertices_lower)
@@ -50,7 +52,7 @@ class Cutting:
 
         for point in hull.points:
             inflated_point = center_hull + face_inflation *(point-center_hull)
-            inflated_points = np.vstack((inflated_points, inflated_point))
+            q = np.vstack((inflated_points, inflated_point))
 
         inflated_hull = ConvexHull(inflated_points)
         mesh = trimesh.load_mesh(path_sourcedata)
@@ -67,6 +69,41 @@ class Cutting:
         if save_intermediate_step:
             cut_mesh.export(path_targetdata.replace(".stl", "_cut.stl"))
         return True 
+
+    def _cut_out_mouth(self, path_sourcedata, path_targetdata, path_landmarks, face_inflation=1.7, save_intermediate_step=True):
+        
+        # Load landmarks
+        landmarks = np.loadtxt(path_landmarks)
+        #Choose landmarks surrounding the mouth
+        selected_landmarks = landmarks[46:55]
+
+        # Create hull around the mouth and inflate it
+        hull = ConvexHull(selected_landmarks)
+        inflated_points = np.zeros((0,3))
+        center_hull = np.mean(hull.points, axis=0)
+
+        for point in hull.points:
+            inflated_point = center_hull + face_inflation *(point-center_hull)
+            inflated_points = np.vstack((inflated_points, inflated_point))
+
+        inflated_hull = ConvexHull(inflated_points)
+
+        # Load stl scan
+        mesh = trimesh.load_mesh(path_sourcedata)
+        verticices = mesh.vertices
+
+        # Decide if the vertex is inside the inflated hull only keep the once outside
+        filtered_vertices = []
+        for vertex in verticices:
+            if not np.all(np.dot(inflated_hull.equations[:, :-1], vertex) + inflated_hull.equations[:, -1] <= 0):
+                filtered_vertices.append(vertex)
+
+        cut_mesh = self._simulate_faces(filtered_vertices)
+        cut_mesh.export(path_sourcedata)
+
+        if save_intermediate_step:
+            cut_mesh.export(path_targetdata.replace(".stl", "_cut.stl"))
+        return True
 
     def _cut_upper_face(self, landmarks, vertices):
         # Cut upper face
