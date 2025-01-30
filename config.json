@@ -1,30 +1,31 @@
 {
     "ManipulationOrder": [
         "Landmarks",
-        "Cutting",
-        "Normalize number of vertices"
-        ],
-    "Normalize number of vertices": {
-        "Number of Vertices": 10000,
-        "SaveIntermediateSteps": true
-    },
+        "Cutting"
+    ],
+
     "Landmarks": {
         "LandmarksConfig": "Deep-MVLM/configs/DTU3D-geometry.json"
     },
+    "Normalize number of vertices": {
+        "Number of Vertices": 9000,
+        "SaveIntermediateSteps": true
+    },
+
     "Cutting": {
-        "OrderCutting": ["outline", "upper_face", "lower_face"],
+        "OrderCutting": [ "outline", "back_face","upper_face", "lower_face", "mouth"],
         "SaveIntermediateSteps": true,
-        "FaceInflation": 1.5
+        "FaceInflation": 2.0
     },
     "DataSource":{
         "type":"local",
         "version":"1.0",
-        "path_source":"../data/in_progress",
-        "path_target_landmarks":"../data/landmarks",
-        "path_target_cutting":"../data/cutting",
-        "path_target_normalize_number_of_vertices":"../data/normalize_number_of_vertices",
-        "path_execution_doc":"../data/execution_doc/execution_doc.csv",
-        "path_log":"../data/log/log.txt"
+        "path_source":"../data_old/in_progress",
+        "path_target_landmarks":"../data_old/landmarks",
+        "path_target_cutting":"../data_old/cutting",
+        "path_target_normalize_number_of_vertices":"../data_old/normalize_number_of_vertices",
+        "path_execution_doc":"../data_old/execution_doc/execution_doc.csv",
+        "path_log":"../data_old/log/log.txt"
     }
 
 }
