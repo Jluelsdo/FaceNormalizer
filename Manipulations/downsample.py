@@ -1,7 +1,7 @@
 import trimesh
 import os
 
-def downsample(input_path, output_path, num_samples, save_intermediate_step=True):
+def downsample(input_path, output_path, num_samples, save_intermediate_step=True, file_type=".stl"):
     """
     Load the mesh and downsample it to the number of samples set in the config.json file.
     simplify_quadratic_decimation is a wrapper for open3d.geometry.TriangleMesh
@@ -12,7 +12,7 @@ def downsample(input_path, output_path, num_samples, save_intermediate_step=True
         file_path = os.path.join(input_path, file_name)
         
         # Check if the file is a mesh file
-        if not file_name.endswith('.stl'):
+        if not file_name.endswith(file_type):
             continue
         # Load the mesh using trimesh
         mesh = trimesh.load_mesh(file_path)
@@ -24,5 +24,5 @@ def downsample(input_path, output_path, num_samples, save_intermediate_step=True
         simplified_mesh.export(file_path)
         if save_intermediate_step:
             file_output_path = os.path.join(output_path, file_name)
-            simplified_mesh.export(file_output_path.replace(".stl", "_simplified.stl"))
+            simplified_mesh.export(file_output_path.replace(file_type, "_simplified"+file_type))
     return True

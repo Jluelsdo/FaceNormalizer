@@ -4,10 +4,10 @@ import signal
 import time
 import torch
 import psutil
-def start_landmark_search(path_file, landmarks_config, path_landmarks):
+def start_landmark_search(path_file, landmarks_config, path_landmarks, file_type=".stl"):
     #Todo: Integrate the landmarks search through the Deep-MVLM library
     torch.cuda.empty_cache()
-    landmarks_name = path_file.split("/")[-1].replace(".stl", "_landmarks.txt")
+    landmarks_name = path_file.split("/")[-1].replace(file_type, "_landmarks.txt")
 
     path_sourcedata = os.path.dirname(path_file)
     command = f"python Deep-MVLM/predict.py --c {landmarks_config} --n {path_file}"

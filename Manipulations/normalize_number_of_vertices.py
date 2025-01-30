@@ -2,7 +2,7 @@ import trimesh
 import os
 import math
 
-def normalize_number_of_vertices(input_path, output_path, num_samples, save_intermediate_step=True):
+def normalize_number_of_vertices(input_path, output_path, num_samples, save_intermediate_step=True, file_type=".stl"):
     """
     Load the mesh and decide if there are more or less verticies than number of vertices.
     If there are more downsample it to the number of samples given, oterwise upsample it.
@@ -11,7 +11,7 @@ def normalize_number_of_vertices(input_path, output_path, num_samples, save_inte
     # Iterate through all files within input_path
     for file_name in os.listdir(input_path):
         file_path = os.path.join(input_path, file_name)
-        if not file_name.endswith('.stl'):
+        if not file_name.endswith(file_type):
             continue
         mesh = trimesh.load_mesh(file_path)
         while num_samples != mesh.vertices.shape[0]:
@@ -24,7 +24,7 @@ def normalize_number_of_vertices(input_path, output_path, num_samples, save_inte
         mesh.export(file_path)
         if save_intermediate_step:
             file_output_path = os.path.join(output_path, file_name)
-            mesh.export(file_output_path.replace(".stl", "_simplified.stl"))
+            mesh.export(file_output_path.replace(file_type, "_simplified"+file_type))
     return True
 
 
